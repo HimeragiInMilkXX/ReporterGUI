@@ -15,11 +15,10 @@ import org.bukkit.plugin.Plugin;
 
 public class ReportCommand implements Listener, CommandExecutor {
 
-    private Plugin plugin = ReporterGUI.getPlugin(ReporterGUI.class);
+    ReporterGUI reportgui = new ReporterGUI();
 
     String target;
 
-    ReporterGUI reportgui = new ReporterGUI();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

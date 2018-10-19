@@ -8,9 +8,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 public class ReportCommand implements CommandExecutor {
 
-    GUI reportgui = new GUI();
+    private static ReportCommand report;
+
+    public static ReportCommand getInstance() {
+
+        if( report == null )
+            report = new ReportCommand();
+        return report;
+
+    }
 
     public String target;
+
+    GUI reportgui = GUI.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

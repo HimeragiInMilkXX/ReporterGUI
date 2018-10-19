@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUI extends ReportCommand implements Listener {
+public class GUI implements Listener {
 
     public String replacement( String msg ) {
 
@@ -26,6 +26,18 @@ public class GUI extends ReportCommand implements Listener {
         return msg;
 
     }
+
+    private static GUI gui;
+
+    public static GUI getInstance() {
+
+        if( gui == null )
+            gui = new GUI();
+        return gui;
+
+    }
+
+    ReportCommand reportCommand = ReportCommand.getInstance();
 
     public Inventory report;
 
@@ -88,11 +100,11 @@ public class GUI extends ReportCommand implements Listener {
             switch (event.getCurrentItem().getType()) {
 
                 case DIAMOND_SWORD:
-                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target + ChatColor.GREEN + "!" );
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
                     break;
 
                 case SKELETON_SKULL:
-                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target + ChatColor.GREEN + "!" );
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
                     break;
 
             } //End of switch

@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GUI implements Listener {
+public class GUI {
 
     public String replacement( String msg ) {
 
@@ -28,7 +28,6 @@ public class GUI implements Listener {
     }
 
     private static GUI gui;
-    private String equaltitle;
 
     public static GUI getInstance() {
 
@@ -38,11 +37,9 @@ public class GUI implements Listener {
 
     }
 
-    public Inventory report;
+    private Inventory report;
 
     public void createGUI(Player player, String title ) {
-
-        equaltitle = title;
 
         report = Bukkit.createInventory( null, 18, title );
 
@@ -91,34 +88,9 @@ public class GUI implements Listener {
 
     }
 
-    @EventHandler
-    public void onReportClick(InventoryClickEvent event) {
+    public Inventory getreportGUI() {
 
-        ReportCommand reportCommand = ReportCommand.getInstance();
-        Player player = (Player) event.getWhoClicked();
-        ClickType clicktype = event.getClick();
-
-        if ( event.getInventory().getName().equalsIgnoreCase( equaltitle ) ) {
-
-            switch (event.getCurrentItem().getType()) {
-
-                case DIAMOND_SWORD:
-                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
-                    event.setCancelled( true );
-                    break;
-
-                case SKELETON_SKULL:
-                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
-                    event.setCancelled( true );
-                    break;
-
-                default:
-                    event.setCancelled( true );
-                    break;
-
-            } //End of switch
-
-        } //End of getItem if
+        return report;
 
     }
 

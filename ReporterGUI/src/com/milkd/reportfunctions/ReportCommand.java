@@ -35,13 +35,13 @@ public class ReportCommand implements CommandExecutor {
 
             } else if (args.length == 1) {
 
-                target = args[0];
-
                 if ( Bukkit.getPlayer(args[0]).isOnline() )
-                    reportgui.createGUI(player, (ChatColor.DARK_RED + "檢舉玩家 " + args[0]));
+                    reportgui.createGUI(player, (ChatColor.DARK_RED + "檢舉玩家- " + args[0]));
                 else if ( Bukkit.getPlayer(args[0]).isOnline() == false ) {
-                    reportgui.createGUI(player, (ChatColor.DARK_RED + "檢舉玩家 " + args[0]));
+                    reportgui.createGUI(player, (ChatColor.DARK_RED + "檢舉玩家- " + args[0]));
                     player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "WARNING!" + ChatColor.RED + args[0] + " is not online!");
+
+                    target = args[0];
 
                 }
 

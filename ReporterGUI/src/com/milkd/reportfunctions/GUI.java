@@ -36,9 +36,7 @@ public class GUI implements Listener {
         return gui;
 
     }
-
-    ReportCommand reportCommand = ReportCommand.getInstance();
-
+    
     public Inventory report;
 
     public void createGUI(Player player, String title ) {
@@ -92,6 +90,7 @@ public class GUI implements Listener {
     @EventHandler
     public void onReportClick(InventoryClickEvent event) {
 
+        ReportCommand reportCommand = ReportCommand.getInstance();
         Player player = (Player) event.getWhoClicked();
         ClickType clicktype = event.getClick();
 

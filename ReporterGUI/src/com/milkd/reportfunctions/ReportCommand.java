@@ -20,10 +20,10 @@ public class ReportCommand implements CommandExecutor {
 
     public String target;
 
-    GUI reportgui = GUI.getInstance();
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+        GUI reportgui = GUI.getInstance();
 
         if (sender instanceof Player) {
 

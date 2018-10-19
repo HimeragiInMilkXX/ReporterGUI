@@ -31,7 +31,7 @@ public class ReporterGUI extends JavaPlugin implements Listener {
 
         return msg;
 
-    }
+    } //replacement
 
     public void onEnable() {
 

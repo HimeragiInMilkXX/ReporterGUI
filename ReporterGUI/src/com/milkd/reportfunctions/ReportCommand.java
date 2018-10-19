@@ -36,7 +36,7 @@ public class ReportCommand implements CommandExecutor {
 
                 }
 
-            }
+            } //else if
 
         } //End of instanceof if
 

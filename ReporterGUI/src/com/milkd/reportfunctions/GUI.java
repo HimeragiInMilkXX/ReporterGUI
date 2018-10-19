@@ -20,7 +20,7 @@ public class GUI implements Listener {
 
     public String replacement( String msg ) {
 
-        msg = msg.replaceAll("(X)", "▁");
+        msg = msg.replaceAll("X", "▁");
         msg = msg.replaceAll("&", "§");
 
         return msg;
@@ -28,6 +28,7 @@ public class GUI implements Listener {
     }
 
     private static GUI gui;
+    private String equaltitle;
 
     public static GUI getInstance() {
 
@@ -36,14 +37,16 @@ public class GUI implements Listener {
         return gui;
 
     }
-    
+
     public Inventory report;
 
     public void createGUI(Player player, String title ) {
 
+        equaltitle = title;
+
         report = Bukkit.createInventory( null, 18, title );
 
-        ItemStack illegal1 = new ItemStack( Material.DIAMOND_SWORD, 0 );
+        ItemStack illegal1 = new ItemStack( Material.DIAMOND_SWORD, 1 );
         ItemMeta illegal1meta = illegal1.getItemMeta();
         //ADD ENCHANTMENTS
         illegal1meta.addEnchant( Enchantment.KNOCKBACK, 2, true );
@@ -53,7 +56,7 @@ public class GUI implements Listener {
         illegal1lore.add( "§e詳情請到伺服器官網查看伺服器守則。" );
         illegal1lore.add( "§e檢舉後請到伺服器論壇發佈實質證據。" );
         illegal1lore.add( "§b§o一旦檢舉成功,該名玩家將會根據罰則進行處罰。" );
-        illegal1lore.add( replacement( "&r&c(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)" ) );
+        illegal1lore.add( replacement( "&r&cXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" ) );
         illegal1lore.add( "" );
         illegal1lore.add( "§9請確保你在檢舉前熟讀 伺服器玩家守則，" );
         illegal1lore.add( "§9若胡亂檢舉可能會被永久禁用檢舉功能。" );
@@ -64,7 +67,7 @@ public class GUI implements Listener {
         //PLACEMENT
         report.setItem( 0, illegal1 );
 
-        ItemStack illegal2347 = new ItemStack( Material.SKELETON_SKULL, 0 );
+        ItemStack illegal2347 = new ItemStack( Material.SKELETON_SKULL, 1 );
         ItemMeta illegal2347Meta = illegal2347.getItemMeta();
         //LORE SETTINGS
         List< String > illegal2347lore = new ArrayList< String >();
@@ -73,7 +76,7 @@ public class GUI implements Listener {
         illegal2347lore.add( replacement("&e詳情請到伺服器官網查看伺服器守則。" ) );
         illegal2347lore.add( replacement("&e檢舉後請到伺服器論壇發佈實質證據。" ) );
         illegal2347lore.add( replacement("&b&o一旦檢舉成功,該名玩家將會根據罰則進行處罰。" ) );
-        illegal2347lore.add( replacement("&r&c(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)(X)" ) );
+        illegal2347lore.add( replacement("&r&cXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" ) );
         illegal2347lore.add( "" );
         illegal2347lore.add( replacement("&9請確保你在檢舉前熟讀 伺服器玩家守則，" ) );
         illegal2347lore.add( replacement("&9若胡亂檢舉可能會被永久禁用檢舉功能。" ) );
@@ -84,6 +87,7 @@ public class GUI implements Listener {
         //PLACEMENT
         report.setItem( 2, illegal2347 );
 
+        player.openInventory( report );
 
     }
 
@@ -94,16 +98,22 @@ public class GUI implements Listener {
         Player player = (Player) event.getWhoClicked();
         ClickType clicktype = event.getClick();
 
-        if ( event.getClickedInventory().equals( report ) ) {
+        if ( event.getInventory().getName().equalsIgnoreCase( equaltitle ) ) {
 
             switch (event.getCurrentItem().getType()) {
 
                 case DIAMOND_SWORD:
                     player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
+                    event.setCancelled( true );
                     break;
 
                 case SKELETON_SKULL:
                     player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportCommand.target + ChatColor.GREEN + "!" );
+                    event.setCancelled( true );
+                    break;
+
+                default:
+                    event.setCancelled( true );
                     break;
 
             } //End of switch

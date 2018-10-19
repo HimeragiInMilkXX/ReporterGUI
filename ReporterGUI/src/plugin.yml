@@ -1,0 +1,6 @@
+name: ReporterGUI
+version: 2.5
+main: com.milkd.reporter.ReporterGUI
+api-version: 1.13
+commands:
+  report:

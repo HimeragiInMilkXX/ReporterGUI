@@ -1,6 +1,5 @@
 package com.milkd.reportfunctions;
 
-import com.milkd.reporter.ReporterGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 public class ReportCommand implements CommandExecutor {
 
-    ReporterGUI reportgui = new ReporterGUI();
+    GUI reportgui = new GUI();
 
     public String target;
 

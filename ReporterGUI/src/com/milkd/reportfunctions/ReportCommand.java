@@ -7,18 +7,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.plugin.Plugin;
-
-public class ReportCommand implements Listener, CommandExecutor {
+public class ReportCommand implements CommandExecutor {
 
     ReporterGUI reportgui = new ReporterGUI();
 
-    String target;
-
+    public String target;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -48,26 +41,6 @@ public class ReportCommand implements Listener, CommandExecutor {
         } //End of instanceof if
 
         return false;
-
-    }
-
-    @EventHandler
-    public void onReportClick(InventoryClickEvent event) {
-
-        Player player = (Player) event.getWhoClicked();
-        ClickType clicktype = event.getClick();
-
-        if (event.getClickedInventory().equals(reportgui.report)) {
-
-            switch (event.getCurrentItem().getType()) {
-
-                case DIAMOND_SWORD:
-                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target + ChatColor.GREEN + "!" );
-                    break;
-
-            } //End of switch
-
-        } //End of getItem if
 
     }
 

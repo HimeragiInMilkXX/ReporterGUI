@@ -6,7 +6,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,6 +22,8 @@ public class ReporterGUI extends JavaPlugin implements Listener {
 
     public Inventory report;
 
+    ReportCommand reportcommand = new ReportCommand();
+
     public String replacement( String msg ) {
 
         msg = msg.replaceAll( "(X)", "▁" );
@@ -30,7 +35,6 @@ public class ReporterGUI extends JavaPlugin implements Listener {
 
     public void onEnable() {
 
-        Bukkit.getPluginManager().registerEvents( new ReportCommand(), this );
         getCommand( "report" ).setExecutor( new ReportCommand() );
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "ReporterGUI enabled!" );
@@ -61,6 +65,26 @@ public class ReporterGUI extends JavaPlugin implements Listener {
         illegal1.setItemMeta( illegal1meta );
         //PLACEMENT
         report.setItem( 0, illegal1 );
+
+    }
+
+    @EventHandler
+    public void onReportClick(InventoryClickEvent event) {
+
+        Player player = (Player) event.getWhoClicked();
+        ClickType clicktype = event.getClick();
+
+        if ( event.getClickedInventory().equals( report ) ) {
+
+            switch (event.getCurrentItem().getType()) {
+
+                case DIAMOND_SWORD:
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + reportcommand.target + ChatColor.GREEN + "!" );
+                    break;
+
+            } //End of switch
+
+        } //End of getItem if
 
     }
 

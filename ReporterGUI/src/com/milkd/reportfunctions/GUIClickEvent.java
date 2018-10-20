@@ -11,15 +11,42 @@ import org.bukkit.inventory.Inventory;
 
 public class GUIClickEvent implements Listener {
 
+    Player reportone;
+    String[] target;
+
+    public String gettarget() {
+
+        return target[2];
+
+    }
+
+    public Player getReportone() {
+
+        return reportone;
+
+    }
+
+    private static GUIClickEvent guievent;
+
+    public static GUIClickEvent getInstance() {
+
+        if( guievent == null )
+            guievent = new GUIClickEvent();
+
+            return guievent;
+
+    }
+
     @EventHandler
     public void onReportClick(InventoryClickEvent event) {
 
         GUI report = GUI.getInstance();
         ReportCommand reportCommand = ReportCommand.getInstance();
         Player player = (Player) event.getWhoClicked();
+        reportone = player;
         ClickType clicktype = event.getClick();
         Inventory using = event.getClickedInventory();
-        String[] target = report.getreportGUI().getName().split( "- " );
+        target = report.getreportGUI().getName().split( "- " );
 
         if ( event.getSlotType() == InventoryType.SlotType.OUTSIDE )
             return;
@@ -29,11 +56,28 @@ public class GUIClickEvent implements Listener {
 
                 case DIAMOND_SWORD:
                     player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target[1] + ChatColor.GREEN + "!" );
+                    player.closeInventory();
                     event.setCancelled( true );
                     break;
 
                 case SKELETON_SKULL:
                     player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target[1] + ChatColor.GREEN + "!" );
+                    player.closeInventory();
+                    event.setCancelled( true );
+                    break;
+                case WHITE_BANNER:
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target[1] + ChatColor.GREEN + "!" );
+                    player.closeInventory();
+                    event.setCancelled( true );
+                    break;
+                case TOTEM_OF_UNDYING:
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target[1] + ChatColor.GREEN + "!" );
+                    player.closeInventory();
+                    event.setCancelled( true );
+                    break;
+                case NAME_TAG:
+                    player.sendMessage( ChatColor.GREEN + "You have reported " + ChatColor.BLUE + target[1] + ChatColor.GREEN + "!" );
+                    player.closeInventory();
                     event.setCancelled( true );
                     break;
 
@@ -46,4 +90,5 @@ public class GUIClickEvent implements Listener {
         } //End of getItem if
 
     }
+
 }

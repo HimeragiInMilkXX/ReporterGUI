@@ -1,0 +1,6 @@
+host: localhost
+port: 3306
+database: testmysql
+username: root
+table: report_sys
+report_value_count: 0

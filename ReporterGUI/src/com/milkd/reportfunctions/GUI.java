@@ -104,7 +104,7 @@ public class GUI {
         //LORE SETTINGS
         List< String > illegal6lore = new ArrayList< String >();
         illegal6lore.add( "" );
-        illegal6lore.add( replacement( "&c// &e檢舉該名玩家觸犯伺服器守則 &a牌位戰之第一條" ) );
+        illegal6lore.add( replacement( "&c// &e檢舉該名玩家觸犯伺服器守則 &a第六條" ) );
         illegal6lore.add( replacement( "&e詳情請到伺服器官網查看伺服器守則。" ) );
         illegal6lore.add( replacement( "&e檢舉後請到伺服器論壇發佈實質證據。" ) );
         illegal6lore.add( replacement( "&b&o一旦檢舉成功,該名玩家將會根據罰則進行處罰。" ) );
@@ -114,7 +114,7 @@ public class GUI {
         illegal6lore.add( replacement( "&9若胡亂檢舉可能會被永久禁用檢舉功能。" ) );
         illegal6meta.setLore( illegal6lore );
         //ITEM SETTINGS
-        illegal6meta.setDisplayName( replacement( "&b&o觸犯 「牌位戰」 之 第一條" ) );
+        illegal6meta.setDisplayName( replacement( "&b&o觸犯 「禁止」 之 第六條" ) );
         illegal6.setItemMeta( illegal6meta );
         //PLACEMENT
         report.setItem( 6, illegal6 );

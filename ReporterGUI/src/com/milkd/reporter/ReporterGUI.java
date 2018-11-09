@@ -1,7 +1,9 @@
 package com.milkd.reporter;
 
+import com.milkd.HandlingReports.GetReportFromCode;
 import com.milkd.chats.ChatFilter;
 import com.milkd.reportfunctions.*;
+import mysql.hypernite.mc.SQLDataSourceManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,30 +13,31 @@ import java.sql.*;
 public class ReporterGUI extends JavaPlugin {
 
     private Connection connection;
-    public String host, database, username, password, table;
-    public int port;
+    public static String table;
+    public static String server;
 
     public void onEnable() {
 
         loadconfig();
+        table = this.getConfig().getString( "table" );
+        server = this.getConfig().getString("server");
+        //mysqlSetup();
 
-        mysqlSetup();
+        String create = "CREATE TABLE IF NOT EXISTS `Report_sys` ( `ReportID` INT PRIMARY KEY NOT NULL, `CODE` VARCHAR( 6 ) NOT NULL, `Reporter` VARCHAR( 40 ) NOT NULL, `Reported` VARCHAR( 40 ) NOT NULL, `State` TINYTEXT NOT NULL, `Server` TINYTEXT NOT NULL)";
 
-        String create = "CREATE TABLE IF NOT EXISTS `Report_sys` ( `CODE` VARCHAR( 6 ) NOT NULL, `Reporter` VARCHAR( 40 ) NOT NULL, `Reported` VARCHAR( 40 ) NOT NULL, `Reason` VARCHAR( 200 ) NOT NULL, `Time` VARCHAR( 20 ) )";
-
-        try {
-
-            PreparedStatement statement = getConnection().prepareStatement( create );
-            statement.executeUpdate();
-
+        try(Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();PreparedStatement statement = connection.prepareStatement(create)){
+            statement.execute();
         } catch( SQLException e ) {
-
             e.printStackTrace();
-
         }
+
         Bukkit.getPluginManager().registerEvents(new GUIClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new ChatFilter(), this);
+
+        getCommand( "reportergui" ).setExecutor( new GetReportFromCode() );
         getCommand("report").setExecutor(new ReportCommand());
+
+        GUI.getInstance();
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "ReporterGUI enabled!");
 
@@ -47,14 +50,16 @@ public class ReporterGUI extends JavaPlugin {
 
     } //End of loadconfig
 
-    public void mysqlSetup() {
+    /*public void mysqlSetup() {
 
         host = this.getConfig().getString( "host" );
         port = this.getConfig().getInt( "port" );
         database = this.getConfig().getString( "database" );
         password = this.getConfig().getString( "password" );
         username = this.getConfig().getString( "username" );
-        table = this.getConfig().getString( "table" );
+        */
+
+        /*
 
         try {
 
@@ -97,7 +102,7 @@ public class ReporterGUI extends JavaPlugin {
 
         return this.connection = connection;
 
-    } //End of setConnection
+    } //End of setConnection*/
 
     public long timestamp() {
 
@@ -109,12 +114,13 @@ public class ReporterGUI extends JavaPlugin {
 
     public void setCODE( PreparedStatement ps ) {
 
-        int count = this.getConfig().getInt( "report_value_count" );
+        int count = this.getConfig().getInt( "report_value_count" ) + 1;
 
         try {
 
-            ps.setString(1, "0" + count);
-            this.getConfig().set( "report_value_count", count++ );
+            ps.setString(1, "0" + count );
+            this.getConfig().set( "report_value_count", count );
+            saveConfig();
 
         } catch( SQLException e ) {
 

@@ -2,13 +2,14 @@ package com.milkd.reportfunctions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GUI {
@@ -32,16 +33,15 @@ public class GUI {
 
     }
 
-    private Inventory report;
+    private ItemStack illegal1;
+    private ItemStack illegal2347;
+    private ItemStack illegal5;
+    private ItemStack illegal6;
+    private ItemStack illegal8;
 
-    public void createGUI(Player player, String title ) {
-
-        report = Bukkit.createInventory( null, 18, title );
-
+    private GUI(){
         ItemStack illegal1 = new ItemStack( Material.DIAMOND_SWORD, 1 );
         ItemMeta illegal1meta = illegal1.getItemMeta();
-        //ADD ENCHANTMENTS
-        illegal1meta.addEnchant( Enchantment.KNOCKBACK, 2, true );
         //LORE SETTINGS
         List< String > illegal1lore = new ArrayList< String >();
         illegal1lore.add( "§c// §e檢舉該名玩家觸犯伺服器守則 §a第一條" );
@@ -57,7 +57,7 @@ public class GUI {
         illegal1meta.setDisplayName( replacement( "&c&o觸犯 「禁止」 之 第一條" ) );
         illegal1.setItemMeta( illegal1meta );
         //PLACEMENT
-        report.setItem( 0, illegal1 );
+        this.illegal1 = illegal1;
 
         ItemStack illegal2347 = new ItemStack( Material.SKELETON_SKULL, 1 );
         ItemMeta illegal2347Meta = illegal2347.getItemMeta();
@@ -77,7 +77,7 @@ public class GUI {
         illegal2347Meta.setDisplayName( replacement( "&b&o觸犯 「禁止」 之 第二、三、四、七條" ) );
         illegal2347.setItemMeta( illegal2347Meta );
         //PLACEMENT
-        report.setItem( 2, illegal2347 );
+        this.illegal2347 = illegal2347;
 
         ItemStack illegal5 = new ItemStack( Material.WHITE_BANNER, 1 );
         ItemMeta illegal5meta = illegal5.getItemMeta();
@@ -97,7 +97,7 @@ public class GUI {
         illegal5meta.setDisplayName( replacement( "&b&o觸犯 「禁止」 之 第五條" ) );
         illegal5.setItemMeta( illegal5meta );
         //PLACEMENT
-        report.setItem( 4, illegal5 );
+        this.illegal5 = illegal5;
 
         ItemStack illegal6 = new ItemStack( Material.TOTEM_OF_UNDYING, 1 );
         ItemMeta illegal6meta = illegal6.getItemMeta();
@@ -117,7 +117,7 @@ public class GUI {
         illegal6meta.setDisplayName( replacement( "&b&o觸犯 「禁止」 之 第六條" ) );
         illegal6.setItemMeta( illegal6meta );
         //PLACEMENT
-        report.setItem( 6, illegal6 );
+        this.illegal6 = illegal6;
 
         ItemStack illegal8 = new ItemStack( Material.NAME_TAG, 1 );
         ItemMeta illegal8meta = illegal8.getItemMeta();
@@ -137,16 +137,40 @@ public class GUI {
         illegal8meta.setDisplayName( replacement( "&b&o觸犯 「牌位戰」 之 第一條" ) );
         illegal8.setItemMeta( illegal8meta );
         //PLACEMENT
-        report.setItem( 8, illegal8 );
-
-        player.openInventory( report );
-
+        this.illegal8 = illegal8;
     }
 
-    public Inventory getreportGUI() {
+    private HashMap<OfflinePlayer, Inventory> InventoryMap = new HashMap<>();
+    private HashMap<Player, OfflinePlayer> reporting = new HashMap<>();
+
+    public Inventory makeReportGUI(OfflinePlayer target) {
+        if (InventoryMap.containsKey(target)) return InventoryMap.get(target);
+        Inventory report = Bukkit.createInventory(null, 18, "§c檢舉玩家 - " + target.getName());
+        if (target.isOnline()) report.setItem( 0, illegal1 );
+        report.setItem( 2, illegal2347 );
+        report.setItem( 4, illegal5 );
+        report.setItem( 6, illegal6 );
+        if (target.isOnline())  report.setItem( 8, illegal8 );
+        InventoryMap.put(target,report);
 
         return report;
+    }
 
+    public Inventory getTargetInventroy(OfflinePlayer target){
+        return InventoryMap.get(target);
+    }
+
+    public void addReport(Player player,OfflinePlayer offlinePlayer){
+        reporting.put(player,offlinePlayer);
+    }
+
+    public void removeReport(Player player){
+        reporting.remove(player);
+    }
+
+    public OfflinePlayer reporting(Player player){
+        if (!reporting.containsKey(player)) return null;
+        return reporting.get(player);
     }
 
 }

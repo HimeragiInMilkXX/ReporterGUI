@@ -1,0 +1,13 @@
+table: report_sys
+server: "server1"
+GUI:
+  Size: 27
+  Title: "&c&lReport"
+  Items:
+    Stone:
+      item: "STONE"
+      Name: "&7&lSorrowful Stone"
+      Lores:
+      - "&eA ugly stone which belongs"
+      - "&eto Frankstein Kevin Chan"
+      Slot: 0

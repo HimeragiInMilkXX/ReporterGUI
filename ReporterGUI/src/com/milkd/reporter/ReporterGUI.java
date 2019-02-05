@@ -12,18 +12,30 @@ import java.sql.*;
 
 public class ReporterGUI extends JavaPlugin {
 
-    private Connection connection;
-    public static String table;
     public static String server;
+
+    public static String table;
 
     public void onEnable() {
 
-        loadconfig();
+        server = this.getConfig().getString( "server" );
         table = this.getConfig().getString( "table" );
-        server = this.getConfig().getString("server");
-        //mysqlSetup();
 
-        String create = "CREATE TABLE IF NOT EXISTS `Report_sys` ( `ReportID` INT PRIMARY KEY NOT NULL, `CODE` VARCHAR( 6 ) NOT NULL, `Reporter` VARCHAR( 40 ) NOT NULL, `Reported` VARCHAR( 40 ) NOT NULL, `State` TINYTEXT NOT NULL, `Server` TINYTEXT NOT NULL)";
+        loadconfig();
+
+        String create = "CREATE TABLE IF NOT EXISTS `Report_sys` ( " +
+                        "`ReportID` int NOT NULL AUTO_INCREMENT, " +
+                        "`ReporterName` varchar(50), " +
+                        "`ReporterUUID` varchar(100) NOT NULL, " +
+                        "`ReportedName` varchar(50), " +
+                        "`ReportedUUID` varchar(100) NOT NULL, " +
+                        "`Reason` varchar(50) NOT NULL, " +
+                        "`TimeStamp` varchar(200) NOT NULL" +
+                        "`State` TINYTEXT NOT NULL" +
+                        "`Server` TINYTEXT NOT NULL" +
+                        "`Operator` varchar(50)" +
+                        "PRIMARY KEY (ReportID) " +
+                        ") )";
 
         try(Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();PreparedStatement statement = connection.prepareStatement(create)){
             statement.execute();
@@ -34,10 +46,10 @@ public class ReporterGUI extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GUIClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new ChatFilter(), this);
 
-        getCommand( "reportergui" ).setExecutor( new GetReportFromCode() );
+        getCommand( "reports" ).setExecutor( new GetReportFromCode() );
         getCommand("report").setExecutor(new ReportCommand());
 
-        GUI.getInstance();
+        GUI.getInstance().createGUI();
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "ReporterGUI enabled!");
 
@@ -49,85 +61,5 @@ public class ReporterGUI extends JavaPlugin {
         saveConfig();
 
     } //End of loadconfig
-
-    /*public void mysqlSetup() {
-
-        host = this.getConfig().getString( "host" );
-        port = this.getConfig().getInt( "port" );
-        database = this.getConfig().getString( "database" );
-        password = this.getConfig().getString( "password" );
-        username = this.getConfig().getString( "username" );
-        */
-
-        /*
-
-        try {
-
-            synchronized ( this ) {
-
-                if( getConnection() != null && !getConnection().isClosed() ) {
-
-                    return;
-
-                } //End of if
-
-            } //End of synchronized
-
-            Class.forName( "com.mysql.jdbc.Driver" );
-
-            setConnection( DriverManager.getConnection( "jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database,
-                    this.username, this.password ) );
-
-            Bukkit.getConsoleSender().sendMessage( ChatColor.GREEN + "MySQL connected" );
-
-        } catch( SQLException e ) {
-
-            e.printStackTrace();
-
-        } catch( ClassNotFoundException e ) {
-
-            e.printStackTrace();
-
-        } //End of catches
-
-    } //End of mysqlSetup
-
-    public Connection getConnection() {
-
-        return this.connection;
-
-    } //End of getConnection
-
-    public Connection setConnection( Connection connection ) {
-
-        return this.connection = connection;
-
-    } //End of setConnection*/
-
-    public long timestamp() {
-
-        Timestamp timestamp = new Timestamp( System.currentTimeMillis() );
-
-        return timestamp.getTime();
-
-    } //End of timestamp
-
-    public void setCODE( PreparedStatement ps ) {
-
-        int count = this.getConfig().getInt( "report_value_count" ) + 1;
-
-        try {
-
-            ps.setString(1, "0" + count );
-            this.getConfig().set( "report_value_count", count );
-            saveConfig();
-
-        } catch( SQLException e ) {
-
-            e.printStackTrace();
-
-        }
-
-    } //End of setCODE
 
 }

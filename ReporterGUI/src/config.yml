@@ -1,7 +1,13 @@
-#host: localhost
-#port: 3306
-#database: testmysql
-#username: root
 table: report_sys
-#report_value_count: 0
 server: "server1"
+GUI:
+  Size: 27
+  Title: "&c&lReport"
+  Items:
+    Stone:
+      item: "STONE"
+      Name: "&7&lSorrowful Stone"
+      Lores:
+      - "&eA ugly stone which belongs"
+      - "&eto Frankstein Kevin Chan"
+      Slot: 0

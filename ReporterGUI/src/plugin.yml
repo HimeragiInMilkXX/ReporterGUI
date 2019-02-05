@@ -4,4 +4,4 @@ main: com.milkd.reporter.ReporterGUI
 api-version: 1.13
 commands:
   report:
-  reportergui:
+  reports:

@@ -1,0 +1,23 @@
+CHEATING:
+  material: STONE
+  name: "&7&lSorrowful Stone"
+  lores:
+    - "&eA ugly stone which belongs"
+    - "&eto Frankstein Kevin Chan"
+  slot: 0
+
+SPAMMING:
+  material: FEATHER
+  name: "&7fucking flight"
+  lores:
+    - "&eA ugly stone which belongs"
+    - "&eto Frankstein Kevin Chan"
+  slot: 1
+
+DISRESPECT:
+  material: DIAMOND_SWORD
+  name: "&7fucking disrespect"
+  lores:
+    - "&eA ugly stone which belongs"
+    - "&eto Frankstein Kevin Chan"
+  slot: 3

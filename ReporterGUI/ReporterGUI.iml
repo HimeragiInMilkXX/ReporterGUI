@@ -7,8 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="ReporterGUI" level="project" />
     <orderEntry type="library" name="HyperNiteMC-Core" level="project" />
-    <orderEntry type="library" name="spigot-1.13.1 (1)" level="project" />
-    <orderEntry type="library" name="Paper-latest" level="project" />
   </component>
 </module>

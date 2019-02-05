@@ -1,5 +1,7 @@
 HyperNite-ReporterGUI Remake
 
-Left:
-1. MYSQL
-2. ThanksGiving
+Log:
+- Report handle and check command (Enum ReportState added 'HANDLING')
+- Config GUI
+- ReportManager Class
+

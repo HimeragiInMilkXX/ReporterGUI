@@ -2,10 +2,12 @@ package com.milkd.commands;
 
 import com.ericlam.containers.HandleInventory;
 import com.ericlam.containers.ReportInfo;
+import com.ericlam.exceptions.ReportNonExistException;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
 import com.milkd.main.ReporterGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,17 +56,23 @@ public class AdminReportCommand implements CommandExecutor {
                     return false;
                 }
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    ReportInfo info = manager.getReportInfo(id);
-                    if (info == null) {
-                        player.sendMessage(ConfigManager.noThisReport.replace("<id>", idStr));
-                        return;
+                    try {
+                        ReportInfo info = manager.getReportInfo(id);
+
+                        if (info == null) {//sql error
+                            player.sendMessage(ChatColor.RED + "SQL error, try again later.");
+                            return;
+                        }
+
+                        player.sendMessage(Arrays.stream(ConfigManager.details).map(msg -> msg
+                                .replace("<report-id>", id + "")
+                                .replace("<main>", info.getReporter().getName())
+                                .replace("<reported>", info.getReported().getName())
+                                .replace("<reason>", info.getReason().toString())
+                                .replace("<state>", info.getState().toString())).toArray(String[]::new));
+                    } catch (ReportNonExistException e) {
+                        player.sendMessage(e.getMessage()); //non exist
                     }
-                    player.sendMessage(Arrays.stream(ConfigManager.details).map(msg -> msg
-                            .replace("<report-id>", id + "")
-                            .replace("<main>", info.getReporter().getName())
-                            .replace("<reported>", info.getReported().getName())
-                            .replace("<reason>", info.getReason().toString())
-                            .replace("<state>", info.getState().toString())).toArray(String[]::new));
                 });
                 return true;
             case "handle":

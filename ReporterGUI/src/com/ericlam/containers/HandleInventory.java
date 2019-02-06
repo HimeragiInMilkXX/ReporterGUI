@@ -2,6 +2,7 @@ package com.ericlam.containers;
 
 import com.caxerx.builders.InventoryBuilder;
 import com.caxerx.builders.ItemStackBuilder;
+import com.ericlam.exceptions.ReportNonExistException;
 import com.ericlam.exceptions.ReportNotOpenException;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
@@ -23,7 +24,7 @@ public class HandleInventory {
                     try {
                         boolean success = ReportManager.getInstance().handleReport(id, item.getState());
                         player.sendMessage(success ? ConfigManager.handled : ConfigManager.handleFail);
-                    } catch (ReportNotOpenException e1) {
+                    } catch (ReportNotOpenException | ReportNonExistException e1) {
                         player.sendMessage(e1.getMessage());
                     }
                 });

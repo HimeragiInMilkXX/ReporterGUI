@@ -3,6 +3,7 @@ package com.ericlam.manager;
 import com.ericlam.containers.ReportInfo;
 import com.ericlam.enums.ReasonType;
 import com.ericlam.enums.ReportState;
+import com.ericlam.exceptions.ReportNonExistException;
 import com.ericlam.exceptions.ReportNotOpenException;
 import com.hypernite.mysql.SQLDataSourceManager;
 import com.milkd.main.ReporterGUI;
@@ -26,22 +27,25 @@ public class ReportManager {
 
     }
 
-    public ReportInfo getReportInfo(int ID) {
+    public ReportInfo getReportInfo(int ID) throws ReportNonExistException {
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + ReporterGUI.table + " WHERE ReportID = ?")) {
 
             ps.setInt(1, ID);
 
             ResultSet report = ps.executeQuery();
-            UUID reporter = UUID.fromString(report.getString("`ReporterUUID`"));
-            UUID target = UUID.fromString(report.getString("`ReportedUUID`"));
-            ReasonType reason = ReasonType.valueOf(report.getString("`Reason`"));
-            ReportState state = ReportState.valueOf(report.getString("`State`"));
-            int reportid = report.getInt("ReportID");
-            long timestamp = report.getLong("TimeStamp");
-            String operator = report.getString("Operator");
+            if (report.next()) {
+                UUID reporter = UUID.fromString(report.getString("`ReporterUUID`"));
+                UUID target = UUID.fromString(report.getString("`ReportedUUID`"));
+                ReasonType reason = ReasonType.valueOf(report.getString("`Reason`"));
+                ReportState state = ReportState.valueOf(report.getString("`State`"));
+                int reportid = report.getInt("ReportID");
+                long timestamp = report.getLong("TimeStamp");
+                String operator = report.getString("Operator");
 
-            return new ReportInfo(reportid, reporter, target, reason, timestamp, state, operator);
-
+                return new ReportInfo(reportid, reporter, target, reason, timestamp, state, operator);
+            } else {
+                throw new ReportNonExistException(ConfigManager.noThisReport.replace("<id>", ID + ""));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -50,13 +54,14 @@ public class ReportManager {
 
     private HashMap<UUID, Set<ReasonType>> duplicateds = new HashMap<>();
 
-    public boolean handleReport(int id, ReportState state) throws ReportNotOpenException {
+    public boolean handleReport(int id, ReportState state) throws ReportNotOpenException, ReportNonExistException {
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();
              PreparedStatement query = connection.prepareStatement("SELECT `State`,`ReportedUUID` FROM`ReportSystem` WHERE `ReportID` =?");
              PreparedStatement execute = connection.prepareStatement("UPDATE `ReportSystem` SET `State` = ? WHERE `ReportID` = ?")) {
             query.setInt(1, id);
             ResultSet resultSet = query.executeQuery();
-
+            if (!resultSet.next())
+                throw new ReportNonExistException(ConfigManager.noThisReport.replace("<id>", id + ""));
             ReportState currentState = ReportState.valueOf(resultSet.getString("state"));
             UUID reportedUUID = UUID.fromString(resultSet.getString("ReportedUUID"));
             if (currentState == ReportState.OPEN || currentState == ReportState.HANDLING) {

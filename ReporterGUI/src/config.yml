@@ -5,3 +5,7 @@ report-gui:
 handle-gui:
   size: 9
   title: "&eHandle Report &e#<id>"
+chat-filter:
+  - hax
+  - hacker
+  - 外掛

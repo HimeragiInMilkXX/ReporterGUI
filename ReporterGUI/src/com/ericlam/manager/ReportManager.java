@@ -5,17 +5,19 @@ import com.ericlam.enums.ReasonType;
 import com.ericlam.enums.ReportState;
 import com.ericlam.exceptions.ReportNotOpenException;
 import com.hypernite.mysql.SQLDataSourceManager;
-import com.milkd.reporter.ReporterGUI;
-import org.bukkit.entity.Player;
+import com.milkd.main.ReporterGUI;
 
 import java.sql.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class ReportManager {
 
     //Default values
     private ReportState Default = ReportState.OPEN;
-    private String server = ReporterGUI.server;
+    private String server = ConfigManager.server;
     private static ReportManager manager;
 
     public static ReportManager getInstance() {
@@ -46,92 +48,88 @@ public class ReportManager {
         }
     }
 
+    private HashMap<UUID, Set<ReasonType>> duplicateds = new HashMap<>();
+
     public boolean handleReport(int id, ReportState state) throws ReportNotOpenException {
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();
-             PreparedStatement query = connection.prepareStatement("SELECT `State` FROM`ReportSystem` WHERE `ReportID` =?");
+             PreparedStatement query = connection.prepareStatement("SELECT `State`,`ReportedUUID` FROM`ReportSystem` WHERE `ReportID` =?");
              PreparedStatement execute = connection.prepareStatement("UPDATE `ReportSystem` SET `State` = ? WHERE `ReportID` = ?")) {
             query.setInt(1, id);
             ResultSet resultSet = query.executeQuery();
 
             ReportState currentState = ReportState.valueOf(resultSet.getString("state"));
-
-            if (currentState == ReportState.OPEN) {
+            UUID reportedUUID = UUID.fromString(resultSet.getString("ReportedUUID"));
+            if (currentState == ReportState.OPEN || currentState == ReportState.HANDLING) {
                 execute.setString(1, state.toString());
                 execute.setInt(2, id);
+                duplicateds.remove(reportedUUID); //also remove cache
                 return execute.execute();
             } else {
                 throw new ReportNotOpenException(ConfigManager.notOpen.replace("<id>", id + "").replace("<state>", currentState.toString()));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean hasReported( UUID Tuuid, UUID Puuid) {
+    private boolean hasReported(UUID Tuuid, ReasonType reason) {
 
-        try {
+        if (duplicateds.containsKey(Tuuid) && duplicateds.get(Tuuid).contains(reason)) return true; //cache
 
-            String reporteruuid;
-            String state;
+        try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `ReportedUUID` FROM `ReportSystem` WHERE `ReportedUUID` = ? AND `State`=? AND `Server`=? AND `Reason`=?")) {
 
-            PreparedStatement ps = SQLDataSourceManager.getInstance().getFuckingConnection().prepareStatement("SELECT * FROM `ReportSystem` WHERE ReportedUUID = ?");
             ps.setString( 1, Tuuid.toString() );
-            ResultSet rs = ps.executeQuery();
-            reporteruuid = rs.getString( "`ReporterUUID`" );
-            state = rs.getString( "`State`" );
+            ps.setString(2, ReportState.OPEN.toString());
+            ps.setString(3, ConfigManager.server);
+            ps.setString(4, reason.toString());
 
-            if ( reporteruuid == Puuid.toString() & state == Default.toString() )
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                if (!duplicateds.containsKey(Tuuid)) duplicateds.put(Tuuid, new HashSet<>());
+                duplicateds.get(Tuuid).add(reason);
                 return true;
-            else return false;
+            } else {
+                return false;
+            }
 
         } catch( SQLException ex ) {
 
             ex.printStackTrace();
+            return false;
 
         }
 
-        return false;
-
     }
 
-    public void addReport( String Pname, String Tname,
-                           UUID Puuid, UUID Tuuid,
-                           String Reason, Timestamp time, Player player ) {
+    public void addReport(String Pname, String Tname,
+                          UUID Puuid, UUID Tuuid,
+                          ReasonType reason, Timestamp time) {
 
         String reporter = Puuid.toString();
         String target = Tuuid.toString();
+        if (hasReported(Tuuid, reason))
+            return; //if duplicated, show player report success and avoid the duplication silently
 
-        if( !( hasReported( Tuuid, Puuid) ) ) {
+        try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement newreport = connection.prepareStatement("INSERT INTO `ReportSystem` ( ReportID, ReporterName, ReporterUUID,ReportedName, ReportedUUID,Reason, `TimeStamp`, State, `Server`, Operator ) VALUE ( ?,?,?,?,?,?,?,?,?,? )")) {
 
-            try {
+            newreport.setString(2, Pname);
+            newreport.setString(3, reporter);
+            newreport.setString(4, Tname);
+            newreport.setString(5, target);
+            newreport.setString(6, reason.toString());
+            newreport.setLong(7, time.getTime());
+            newreport.setString(8, Default.toString());
+            newreport.setString(9, server);
+            newreport.setString(10, null);
 
-                PreparedStatement newreport = SQLDataSourceManager.getInstance().getFuckingConnection().prepareStatement("INSERT INTO `ReportSystem`" +
-                                                                                                                             " ( ReportID," +
-                                                                                                                             " ReporterName, ReporterUUID," +
-                                                                                                                             " ReportedName, ReportedUUID," +
-                                                                                                                             " Reason, TimeStamp, State, Server, Operator ) VALUE ( ?,?,?,?,?,?,?,?,?,? )" );
+            newreport.execute();
 
-                newreport.setString( 2, Pname );
-                newreport.setString( 3, reporter );
-                newreport.setString( 4, Tname );
-                newreport.setString( 5, target );
-                newreport.setString( 6, Reason );
-                newreport.setLong(7, time.getTime());
-                newreport.setString( 8, Default.toString() );
-                newreport.setString( 9, server );
-                newreport.setString( 10, "---" );
+        } catch (SQLException ex) {
 
-                newreport.executeUpdate();
-
-                player.closeInventory();
-                player.sendMessage("&cYou have reported &a" + Tname + "&c with the reason of &e" + Reason);
-
-            } catch( SQLException ex ) {
-
-                ex.printStackTrace();
-
-            }
+            ex.printStackTrace();
 
         }
 

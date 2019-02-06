@@ -1,10 +1,11 @@
-package com.milkd.reporter;
+package com.milkd.main;
 
+import com.ericlam.manager.ConfigManager;
 import com.hypernite.mysql.SQLDataSourceManager;
-import com.milkd.chats.ChatFilter;
 import com.milkd.commands.AdminReportCommand;
+import com.milkd.commands.ReloadCommand;
 import com.milkd.commands.ReportCommand;
-import com.milkd.reportfunctions.GUIClickEvent;
+import com.milkd.listener.onPlayerChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -16,7 +17,6 @@ import java.sql.SQLException;
 
 public class ReporterGUI extends JavaPlugin {
 
-    public static String server;
     public static Plugin plugin;
 
     public static String table;
@@ -24,12 +24,7 @@ public class ReporterGUI extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        server = this.getConfig().getString( "server" );
-        table = this.getConfig().getString( "table" );
-
-        loadconfig();
-
-        String create = "CREATE TABLE IF NOT EXISTS `Report_sys` ( " +
+        String create = "CREATE TABLE IF NOT EXISTS `ReportSystem` ( " +
                         "`ReportID` int NOT NULL AUTO_INCREMENT, " +
                         "`ReporterName` varchar(50), " +
                         "`ReporterUUID` varchar(100) NOT NULL, " +
@@ -49,22 +44,18 @@ public class ReporterGUI extends JavaPlugin {
             e.printStackTrace();
         }
 
-        Bukkit.getPluginManager().registerEvents(new GUIClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new ChatFilter(), this);
+        ConfigManager.getInstance().loadConfig();
 
-        getCommand("reports").setExecutor(new AdminReportCommand(this));
+        Bukkit.getPluginManager().registerEvents(new onPlayerChat(), this);
+
+        getCommand("reportadmin").setExecutor(new AdminReportCommand(this));
         getCommand("report").setExecutor(new ReportCommand());
+        getCommand("reportreload").setExecutor(new ReloadCommand());
+
 
 
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "ReporterGUI enabled!");
 
     }
-
-    public void loadconfig() {
-
-        this.getConfig().options().copyDefaults( true );
-        saveConfig();
-
-    } //End of loadconfig
 
 }

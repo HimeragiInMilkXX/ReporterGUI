@@ -1,8 +1,9 @@
+prefix: "&cReport// &a"
 report-hints: "&7使用&e /report §7來檢舉不當玩家。"
 not-value: "&4Please enter an Integer!"
 details:
   - "&eReportId: <report-id>"
-  - "&aReporter: <reporter>"
+  - "&aReporter: <main>"
   - "&aReported: <reported>"
   - "&aReason: <reason>"
   - "&aState: &c&l <state>"
@@ -17,5 +18,6 @@ help:
 not-player: "&4You must be a player to use this command"
 no-perm: "&eYou don't have enough permission"
 require-player: "Please enter the player that you want to report:  /report <player>"
+reported: "&eSuccessfully reported <player> as <reason>"
 no-this-player: "&eThis player is not exist on our server!"
 no-this-report: "&eNo this report with id <id>"

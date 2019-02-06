@@ -4,7 +4,7 @@ import com.ericlam.containers.HandleInventory;
 import com.ericlam.containers.ReportInfo;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
-import com.milkd.reporter.ReporterGUI;
+import com.milkd.main.ReporterGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,6 +49,10 @@ public class AdminReportCommand implements CommandExecutor {
 
         switch (method) {
             case "info":
+                if (sender.hasPermission("report.helper")) {
+                    sender.sendMessage(ConfigManager.noPerm);
+                    return false;
+                }
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     ReportInfo info = manager.getReportInfo(id);
                     if (info == null) {
@@ -57,17 +61,22 @@ public class AdminReportCommand implements CommandExecutor {
                     }
                     player.sendMessage(Arrays.stream(ConfigManager.details).map(msg -> msg
                             .replace("<report-id>", id + "")
-                            .replace("<reporter>", info.getReporter().getName())
+                            .replace("<main>", info.getReporter().getName())
                             .replace("<reported>", info.getReported().getName())
                             .replace("<reason>", info.getReason().toString())
                             .replace("<state>", info.getState().toString())).toArray(String[]::new));
                 });
                 return true;
             case "handle":
+                if (sender.hasPermission("report.mod")) {
+                    sender.sendMessage(ConfigManager.noPerm);
+                    return false;
+                }
                 player.openInventory(new HandleInventory(id).getInventory());
                 return true;
 
         }
+
         return true;
     }
 }

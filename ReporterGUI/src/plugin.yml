@@ -1,7 +1,19 @@
 name: ReporterGUI
 version: 2.5
-main: com.milkd.reporter.ReporterGUI
+main: com.milkd.main.ReporterGUI
 api-version: 1.13
+authors:
+  - Milkd
+  - EricLam
 commands:
   report:
-  reports:
+    description: report command
+  reportadmin:
+    description: report admin command
+permissions:
+  report.helper:
+    description: helper permission
+  report.mod:
+    description: mod permission
+  report.admin:
+    description: admin permission

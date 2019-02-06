@@ -4,7 +4,7 @@ import com.caxerx.builders.InventoryBuilder;
 import com.caxerx.builders.ItemStackBuilder;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
-import com.milkd.reporter.ReporterGUI;
+import com.milkd.main.ReporterGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -17,11 +17,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 public class ReportInventory {
-    private OfflinePlayer reportedPlayer;
     private Inventory inventory;
 
     public ReportInventory(OfflinePlayer reportedPlayer) {
-        this.reportedPlayer = reportedPlayer;
         UUID reportedUUID = reportedPlayer.getUniqueId();
         Inventory inventory = new InventoryBuilder(ConfigManager.reportGuiSize, ConfigManager.reportGuiTitle.replace("<player>", reportedPlayer.getName())).build();
         for (ReportItem item : ConfigManager.getInstance().getReportItems()) {
@@ -29,7 +27,10 @@ public class ReportInventory {
                 Player player = (Player) e.getWhoClicked();
                 Timestamp time = Timestamp.from(Instant.now());
                 if (e.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
-                Bukkit.getScheduler().runTaskAsynchronously(ReporterGUI.plugin, () -> ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason().toString(), time, player));
+                Bukkit.getScheduler().runTaskAsynchronously(ReporterGUI.plugin, () -> {
+                    ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason(), time);
+                    player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle()));
+                });
             }).build();
             inventory.setItem(item.getSlot(), stack);
         }
@@ -37,15 +38,7 @@ public class ReportInventory {
         this.inventory = inventory;
     }
 
-    public OfflinePlayer getReportedPlayer() {
-        return reportedPlayer;
-    }
-
     public Inventory getInventory() {
         return inventory;
-    }
-
-    public UUID getReportedUUID() {
-        return reportedPlayer.getUniqueId();
     }
 }

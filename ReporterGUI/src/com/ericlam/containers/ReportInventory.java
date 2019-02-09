@@ -4,7 +4,7 @@ import com.caxerx.builders.InventoryBuilder;
 import com.caxerx.builders.ItemStackBuilder;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
-import com.milkd.main.ReporterGUI;
+import com.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class ReportInventory {
                 Player player = (Player) e.getWhoClicked();
                 Timestamp time = Timestamp.from(Instant.now());
                 if (e.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
-                Bukkit.getScheduler().runTaskAsynchronously(ReporterGUI.plugin, () -> {
+                Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
                     ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason(), time);
                     player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle()));
                 });

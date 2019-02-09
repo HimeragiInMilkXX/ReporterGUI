@@ -6,7 +6,7 @@ import com.ericlam.enums.ReportState;
 import com.ericlam.exceptions.ReportNonExistException;
 import com.ericlam.exceptions.ReportNotOpenException;
 import com.hypernite.mysql.SQLDataSourceManager;
-import com.milkd.main.ReporterGUI;
+import com.milkd.main.ReportSystem;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class ReportManager {
     }
 
     public ReportInfo getReportInfo(int ID) throws ReportNonExistException {
-        try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + ReporterGUI.table + " WHERE ReportID = ?")) {
+        try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + ReportSystem.table + " WHERE ReportID = ?")) {
 
             ps.setInt(1, ID);
 

@@ -4,7 +4,7 @@ import com.ericlam.containers.HandleItem;
 import com.ericlam.containers.ReportItem;
 import com.ericlam.enums.ReasonType;
 import com.ericlam.enums.ReportState;
-import com.milkd.main.ReporterGUI;
+import com.milkd.main.ReportSystem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,7 +33,7 @@ public class ConfigManager {
     private HashSet<HandleItem> handleItems = new HashSet<>();
 
     private ConfigManager() {
-        Plugin plugin = ReporterGUI.plugin;
+        Plugin plugin = ReportSystem.plugin;
         configFile = new File(plugin.getDataFolder(), "config.yml");
         messageFile = new File(plugin.getDataFolder(), "messages.yml");
         reportFile = new File(plugin.getDataFolder(), "report-items.yml");

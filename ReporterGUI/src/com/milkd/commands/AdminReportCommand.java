@@ -5,7 +5,7 @@ import com.ericlam.containers.ReportInfo;
 import com.ericlam.exceptions.ReportNonExistException;
 import com.ericlam.manager.ConfigManager;
 import com.ericlam.manager.ReportManager;
-import com.milkd.main.ReporterGUI;
+import com.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,7 +21,7 @@ public class AdminReportCommand implements CommandExecutor {
     private final ReportManager manager;
     private final Plugin plugin;
 
-    public AdminReportCommand(ReporterGUI plugin) {
+    public AdminReportCommand(ReportSystem plugin) {
         manager = ReportManager.getInstance();
         this.plugin = plugin;
     }

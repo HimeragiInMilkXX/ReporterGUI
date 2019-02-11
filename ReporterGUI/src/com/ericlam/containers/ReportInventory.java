@@ -27,6 +27,7 @@ public class ReportInventory {
                 Player player = (Player) e.getWhoClicked();
                 Timestamp time = Timestamp.from(Instant.now());
                 if (e.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
+                e.setCancelled(true);
                 Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
                     ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason(), time);
                     player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle()));

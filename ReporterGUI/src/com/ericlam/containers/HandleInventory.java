@@ -20,6 +20,7 @@ public class HandleInventory {
         for (HandleItem item : ConfigManager.getInstance().getHandleItems()) {
             ItemStack stack = new ItemStackBuilder(item.getMaterial()).displayName(item.getTitle()).lore(item.getLores()).onClick(e -> {
                 Player player = (Player) e.getWhoClicked();
+                e.setCancelled(true);
                 Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
                     try {
                         boolean success = ReportManager.getInstance().handleReport(id, item.getState());

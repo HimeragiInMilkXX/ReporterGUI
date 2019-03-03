@@ -104,7 +104,17 @@ public class AdminReportCommand implements CommandExecutor {
                     sender.sendMessage(ConfigManager.noPerm);
                     return false;
                 }
-                player.openInventory(new HandleInventory(id).getInventory());
+                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    boolean have = manager.hasReportID(id);
+                    Bukkit.getScheduler().runTask(plugin, () -> {
+                        if (have) {
+                            player.openInventory(new HandleInventory(id).getInventory());
+                        } else {
+                            player.sendMessage(ConfigManager.noThisReport.replace("<id>", id + ""));
+                        }
+                    });
+                });
+
                 return true;
             default:
                 player.sendMessage(ConfigManager.helps);

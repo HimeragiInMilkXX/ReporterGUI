@@ -18,6 +18,9 @@ public class ReportManager {
     private String server = ConfigManager.server;
     private static ReportManager manager;
 
+    private HashSet<Integer> nonexist = new HashSet<>();
+    private HashMap<UUID, Set<ReasonType>> duplicateds = new HashMap<>();
+
     public static ReportManager getInstance() {
         if (manager == null) manager = new ReportManager();
         return manager;
@@ -43,6 +46,8 @@ public class ReportManager {
     }
 
     public ReportInfo getReportInfo(int ID) throws ReportNonExistException {
+        if (nonexist.contains(ID))
+            throw new ReportNonExistException(ConfigManager.noThisReport.replace("<id>", ID + ""));
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT * FROM `ReportSystem` WHERE ReportID = ?")) {
 
             ps.setInt(1, ID);
@@ -67,16 +72,18 @@ public class ReportManager {
         }
     }
 
-    private HashMap<UUID, Set<ReasonType>> duplicateds = new HashMap<>();
-
     public boolean handleReport(int id, ReportState state) throws ReportNotOpenException, ReportNonExistException {
+        if (nonexist.contains(id))
+            throw new ReportNonExistException(ConfigManager.noThisReport.replace("<id>", id + ""));
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();
              PreparedStatement query = connection.prepareStatement("SELECT `State`,`ReportedUUID` FROM`ReportSystem` WHERE `ReportID` =?");
              PreparedStatement execute = connection.prepareStatement("UPDATE `ReportSystem` SET `State` = ? WHERE `ReportID` = ?")) {
             query.setInt(1, id);
             ResultSet resultSet = query.executeQuery();
-            if (!resultSet.next())
+            if (!resultSet.next()) {
+                nonexist.add(id);
                 throw new ReportNonExistException(ConfigManager.noThisReport.replace("<id>", id + ""));
+            }
             ReportState currentState = ReportState.valueOf(resultSet.getString("state"));
             UUID reportedUUID = UUID.fromString(resultSet.getString("ReportedUUID"));
             if (currentState == ReportState.OPEN || currentState == ReportState.HANDLING || state == ReportState.HANDLING) {
@@ -93,6 +100,19 @@ public class ReportManager {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean hasReportID(int id) {
+        try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `ReportID` FROM `ReportSystem` WHERE `ReportID`=?")) {
+            ps.setInt(1, id);
+            if (ps.executeQuery().next()) {
+                nonexist.add(id);
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private boolean hasReported(UUID Tuuid, ReasonType reason) {
@@ -128,7 +148,7 @@ public class ReportManager {
     public void addReport(String Pname, String Tname,
                           UUID Puuid, UUID Tuuid,
                           ReasonType reason, Timestamp time) {
-
+        nonexist.clear();
         String reporter = Puuid.toString();
         String target = Tuuid.toString();
         if (hasReported(Tuuid, reason))

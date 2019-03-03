@@ -22,7 +22,7 @@ public class ReportCommand implements CommandExecutor {
         }
         Player player = (Player) sender;
 
-        if (args.length == 0) {
+        if (args.length < 1) {
             player.sendMessage(ConfigManager.requirePlayer);
             return false;
         }
@@ -36,7 +36,10 @@ public class ReportCommand implements CommandExecutor {
         }
 
         OfflinePlayer reportedPlayer = Bukkit.getOfflinePlayer(reportUUID);
-
+        if (reportedPlayer.getName() == null) {
+            player.sendMessage(ConfigManager.noThisPlayer);
+            return false;
+        }
         player.openInventory(new ReportInventory(reportedPlayer).getInventory());
         return true;
     }

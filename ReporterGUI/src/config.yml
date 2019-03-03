@@ -1,6 +1,6 @@
 server: server
 report-gui:
-  size: 9
+  size: 18
   title: "&4Report &b<player>"
 handle-gui:
   size: 9

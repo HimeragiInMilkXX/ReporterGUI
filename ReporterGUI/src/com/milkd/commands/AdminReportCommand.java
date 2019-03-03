@@ -53,7 +53,7 @@ public class AdminReportCommand implements CommandExecutor {
                         for (Integer integer : lists.keySet()) {
                             player.sendMessage(ConfigManager.prefix + "§f#" + integer + " §7- " + lists.get(integer).getTitle());
                         }
-                        player.sendMessage(ConfigManager.prefix + "§7若舉報ID過多，請自行到舉報管理頁面查看。");
+                        player.sendMessage(ConfigManager.prefix + "§7若舉報ID過多，請自行到舉報管理頁面查看。§c輸入/reportadmin info <id> 查看報告。");
                     } catch (NoAvailableReportException e) {
                         player.sendMessage(ConfigManager.noAvaReports);
                         return false;
@@ -92,7 +92,7 @@ public class AdminReportCommand implements CommandExecutor {
                                 .replace("<report-id>", id + "")
                                 .replace("<main>", info.getReporter().getName())
                                 .replace("<reported>", info.getReported().getName())
-                                .replace("<reason>", info.getReason().toString())
+                                .replace("<reason>", info.getReason().getTitle())
                                 .replace("<state>", info.getState().getTitle())).toArray(String[]::new));
                     } catch (ReportNonExistException e) {
                         player.sendMessage(e.getMessage()); //non exist

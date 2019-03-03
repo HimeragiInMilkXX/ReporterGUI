@@ -2,13 +2,18 @@ name: ReportSystem
 version: 2.5
 main: com.milkd.main.ReportSystem
 api-version: 1.13
+depend:
+  - HyperNiteMC-Core
 authors:
   - EricLam
+  - HimeragiInMilkXX
 commands:
   report:
     description: report command
   reportadmin:
     description: report admin command
+  reportreload:
+    description: report reload command
 permissions:
   report.helper:
     description: helper permission

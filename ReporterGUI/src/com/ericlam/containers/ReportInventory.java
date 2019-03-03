@@ -30,7 +30,7 @@ public class ReportInventory {
                 e.setCancelled(true);
                 Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
                     ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason(), time);
-                    player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle()));
+                    player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle().replace("&", "§")));
                 });
             }).build();
             inventory.setItem(item.getSlot(), stack);

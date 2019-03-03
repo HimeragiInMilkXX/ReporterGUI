@@ -1,34 +1,19 @@
 OPEN:
   material: BLACK_WOOL
-  name: "&a設為開放審查"
-  lores:
-    - "&e點擊以設置"
   slot: 0
 
 DENIED:
   material: RED_WOOL
-  name: "&a設為否定舉報"
-  lores:
-    - "&e點擊以設置"
   slot: 2
 
 EXPIRE:
   material: WHITE_WOOL
-  name: "&f設為已過期"
-  lores:
-    - "&e點擊以設置"
   slot: 4
 
 PROVED:
   material: WHITE_WOOL
-  name: "&a設為舉報屬實"
-  lores:
-    - "&e點擊以設置"
   slot: 6
 
 HANDLING:
   material: BLUE_WOOL
-  name: "&b設為審查中"
-  lores:
-    - "&e點擊以設置"
   slot: 8

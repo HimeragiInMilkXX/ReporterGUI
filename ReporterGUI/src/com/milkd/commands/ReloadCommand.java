@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender.hasPermission("report.admin")) {
+        if (!commandSender.hasPermission("report.admin")) {
             commandSender.sendMessage(ConfigManager.noPerm);
             return false;
         }

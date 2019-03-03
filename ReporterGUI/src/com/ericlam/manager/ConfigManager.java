@@ -21,7 +21,7 @@ public class ConfigManager {
     public static int reportGuiSize, handleGuiSize;
     //for messages
     public static String prefix, reportHints, notValue, notOpen, handled, notPlayer, noPerm, requirePlayer,
-            noThisPlayer, noThisReport, handleFail, reported;
+            noThisPlayer, noThisReport, handleFail, reported, noAvaReports;
     public static String[] helps, details;
     private static ConfigManager configManager;
     public static List<String> chatContains;
@@ -75,20 +75,20 @@ public class ConfigManager {
         //load report items
         for (String key : report.getKeys(false)) {
             Material material = Material.valueOf(report.getString(key + ".material"));
-            String title = report.getString(key + ".name");
+            ReasonType reason = ReasonType.valueOf(key);
+            String title = reason.getTitle();
             List<String> lores = report.getStringList(key + ".lores");
             int slot = report.getInt(key + ".slot");
-            ReasonType reason = ReasonType.valueOf(key);
             reportItems.add(new ReportItem(material, title, lores, slot, reason));
         }
 
         //load handle items
         for (String key : handle.getKeys(false)) {
             Material material = Material.valueOf(handle.getString(key + ".material"));
-            String title = handle.getString(key + ".name");
-            List<String> lores = handle.getStringList(key + ".lores");
-            int slot = handle.getInt(key + ".slot");
             ReportState state = ReportState.valueOf(key);
+            String title = state.getItemName();
+            List<String> lores = state.getLore();
+            int slot = handle.getInt(key + ".slot");
             handleItems.add(new HandleItem(material, title, lores, slot, state));
         }
 
@@ -115,10 +115,11 @@ public class ConfigManager {
         noThisPlayer = translate("no-this-player");
         noThisReport = translate("no-this-report");
         reported = translate("reported");
+        noAvaReports = translate("no-available-reports");
 
 
-        helps = translate(report.getStringList("help"));
-        details = translate(report.getStringList("details"));
+        helps = translate(message.getStringList("help"));
+        details = translate(message.getStringList("details"));
     }
 
     public void reloadConfig() {

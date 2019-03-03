@@ -1,23 +1,53 @@
-CHEATING:
+ONE:
   material: STONE
-  name: "&7&lSorrowful Stone"
   lores:
-    - "&eA ugly stone which belongs"
-    - "&eto Frankstein Kevin Chan"
+    - "&e使用任何作弊1模組、客戶端、第三方輔助程式外掛及作出任何影響遊戲公平性的行為"
   slot: 0
 
-SPAMMING:
+TWO:
   material: FEATHER
-  name: "&7fucking flight"
   lores:
-    - "&eA ugly stone which belongs"
-    - "&eto Frankstein Kevin Chan"
-  slot: 1
+    - "&e使用正宗粗言謂語(本服將設有粗言過濾)"
+  slot: 2
 
-DISRESPECT:
+THREE:
   material: DIAMOND_SWORD
-  name: "&7fucking disrespect"
   lores:
-    - "&eA ugly stone which belongs"
-    - "&eto Frankstein Kevin Chan"
-  slot: 3
+    - "&e使用任何侮辱性字眼3對別人進行言語攻擊(即所謂辱罵，人身攻擊)"
+  slot: 4
+
+FOUR:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e對他人作出干擾，洗屏，挑釁等等令人困擾的行為"
+  slot: 6
+
+FIVE:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e在遊戲中遇到漏洞不但知情不報，反而利用漏洞進行任何破壞遊戲玩法與跌序及影響遊戲公平性的行為"
+  slot: 8
+
+SIX:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e在個人戰進行任何組隊合作的行為；在組隊戰進行任何跨隊伍合作的行為"
+  slot: 10
+
+SEVEN:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e對管理層人員無禮；公然挑戰、挑釁、甚至恐嚇管理層人員"
+  slot: 12
+
+EIGHT:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e無合理許可下於公頻聊天欄發送任何廣告(包括伺服器宣傳，個人工作室宣傳等等)"
+  slot: 14
+
+NINE:
+  material: DIAMOND_SWORD
+  lores:
+    - "&e包庇作弊玩家；對玩家作弊行為知情不報"
+  slot: 16

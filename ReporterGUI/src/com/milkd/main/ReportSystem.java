@@ -19,8 +19,6 @@ public class ReportSystem extends JavaPlugin {
 
     public static Plugin plugin;
 
-    public static String table;
-
     public void onEnable() {
         plugin = this;
 

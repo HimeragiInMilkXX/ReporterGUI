@@ -12,6 +12,7 @@ handled: "&eSuccessfully change report <id> to <state>"
 handled-fail: "&eOperation fail"
 help:
   - "&c&m------------------------------------"
+  - "&7&;/reports available &e&m - &aList the available reports"
   - "&7&l/reports info <ID> &e&m- &r&aGet the of Report <id>"
   - "&7&l/reports handle <ID> &e&m- &r&aHandle the of Report <id>"
   - "&c&m------------------------------------"
@@ -21,3 +22,4 @@ require-player: "Please enter the player that you want to report:  /report <play
 reported: "&eSuccessfully reported <player> as <reason>"
 no-this-player: "&eThis player is not exist on our server!"
 no-this-report: "&eNo this report with id <id>"
+no-available-reports: "&cThere's no available open reports"

@@ -1,8 +1,8 @@
-package com.milkd.listener;
+package com.reporter.sys.milkd.listener;
 
-import com.ericlam.manager.ConfigManager;
-import com.ericlam.manager.ReportManager;
-import com.milkd.main.ReportSystem;
+import com.reporter.sys.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.manager.ReportManager;
+import com.reporter.sys.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

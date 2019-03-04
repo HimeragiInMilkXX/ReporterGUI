@@ -1,6 +1,6 @@
-package com.milkd.commands;
+package com.reporter.sys.milkd.commands;
 
-import com.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.manager.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

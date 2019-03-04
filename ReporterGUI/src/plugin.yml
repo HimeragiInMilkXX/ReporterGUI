@@ -1,6 +1,6 @@
 name: ReportSystem
 version: 2.5
-main: com.milkd.main.ReportSystem
+main: com.reporter.sys.milkd.main.ReportSystem
 api-version: 1.13
 depend:
   - HyperNiteMC-Core

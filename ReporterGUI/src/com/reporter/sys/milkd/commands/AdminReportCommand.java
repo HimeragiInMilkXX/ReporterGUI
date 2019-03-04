@@ -1,13 +1,13 @@
-package com.milkd.commands;
+package com.reporter.sys.milkd.commands;
 
-import com.ericlam.containers.HandleInventory;
-import com.ericlam.containers.ReportInfo;
-import com.ericlam.enums.ReportState;
-import com.ericlam.exceptions.NoAvailableReportException;
-import com.ericlam.exceptions.ReportNonExistException;
-import com.ericlam.manager.ConfigManager;
-import com.ericlam.manager.ReportManager;
-import com.milkd.main.ReportSystem;
+import com.reporter.sys.ericlam.containers.HandleInventory;
+import com.reporter.sys.ericlam.containers.ReportInfo;
+import com.reporter.sys.ericlam.enums.ReportState;
+import com.reporter.sys.ericlam.exceptions.NoAvailableReportException;
+import com.reporter.sys.ericlam.exceptions.ReportNonExistException;
+import com.reporter.sys.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.manager.ReportManager;
+import com.reporter.sys.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

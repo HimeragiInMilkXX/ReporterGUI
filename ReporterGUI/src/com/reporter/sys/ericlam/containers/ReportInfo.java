@@ -1,7 +1,7 @@
-package com.ericlam.containers;
+package com.reporter.sys.ericlam.containers;
 
-import com.ericlam.enums.ReasonType;
-import com.ericlam.enums.ReportState;
+import com.reporter.sys.ericlam.enums.ReasonType;
+import com.reporter.sys.ericlam.enums.ReportState;
 
 import java.util.UUID;
 

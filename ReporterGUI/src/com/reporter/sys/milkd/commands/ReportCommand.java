@@ -1,7 +1,7 @@
-package com.milkd.commands;
+package com.reporter.sys.milkd.commands;
 
-import com.ericlam.containers.ReportInventory;
-import com.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.containers.ReportInventory;
+import com.reporter.sys.ericlam.manager.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;

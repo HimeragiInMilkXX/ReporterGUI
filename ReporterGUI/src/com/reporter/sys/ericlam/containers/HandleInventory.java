@@ -1,12 +1,12 @@
-package com.ericlam.containers;
+package com.reporter.sys.ericlam.containers;
 
 import com.caxerx.builders.InventoryBuilder;
 import com.caxerx.builders.ItemStackBuilder;
-import com.ericlam.exceptions.ReportNonExistException;
-import com.ericlam.exceptions.ReportNotOpenException;
-import com.ericlam.manager.ConfigManager;
-import com.ericlam.manager.ReportManager;
-import com.milkd.main.ReportSystem;
+import com.reporter.sys.ericlam.exceptions.ReportNonExistException;
+import com.reporter.sys.ericlam.exceptions.ReportNotOpenException;
+import com.reporter.sys.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.manager.ReportManager;
+import com.reporter.sys.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

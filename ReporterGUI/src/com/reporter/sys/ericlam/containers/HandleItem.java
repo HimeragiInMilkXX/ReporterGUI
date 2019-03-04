@@ -1,23 +1,23 @@
-package com.ericlam.containers;
+package com.reporter.sys.ericlam.containers;
 
-import com.ericlam.enums.ReasonType;
+import com.reporter.sys.ericlam.enums.ReportState;
 import org.bukkit.Material;
 
 import java.util.List;
 
-public class ReportItem {
+public class HandleItem {
     private Material material;
     private String title;
     private List<String> lores;
     private int slot;
-    private ReasonType reason;
+    private ReportState state;
 
-    public ReportItem(Material material, String title, List<String> lores, int slot, ReasonType reason) {
+    public HandleItem(Material material, String title, List<String> lores, int slot, ReportState state) {
         this.material = material;
         this.title = title;
         this.lores = lores;
         this.slot = slot;
-        this.reason = reason;
+        this.state = state;
     }
 
     public Material getMaterial() {
@@ -36,7 +36,7 @@ public class ReportItem {
         return slot;
     }
 
-    public ReasonType getReason() {
-        return reason;
+    public ReportState getState() {
+        return state;
     }
 }

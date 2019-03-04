@@ -1,4 +1,4 @@
-package com.ericlam.enums;
+package com.reporter.sys.ericlam.enums;
 
 import java.util.ArrayList;
 import java.util.List;

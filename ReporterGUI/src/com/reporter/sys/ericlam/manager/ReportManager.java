@@ -1,23 +1,20 @@
-package com.ericlam.manager;
+package com.reporter.sys.ericlam.manager;
 
-import com.ericlam.bungee.PluginMessager;
-import com.ericlam.containers.ReportInfo;
-import com.ericlam.enums.ReasonType;
-import com.ericlam.enums.ReportState;
-import com.ericlam.exceptions.NoAvailableReportException;
-import com.ericlam.exceptions.ReportNonExistException;
-import com.ericlam.exceptions.ReportNotOpenException;
 import com.hypernite.mysql.SQLDataSourceManager;
-import com.milkd.main.ReportSystem;
+import com.reporter.sys.ericlam.containers.ReportInfo;
+import com.reporter.sys.ericlam.enums.ReasonType;
+import com.reporter.sys.ericlam.enums.ReportState;
+import com.reporter.sys.ericlam.exceptions.NoAvailableReportException;
+import com.reporter.sys.ericlam.exceptions.ReportNonExistException;
+import com.reporter.sys.ericlam.exceptions.ReportNotOpenException;
+import com.reporter.sys.ericlam.redis.RedisChannel;
+import com.reporter.sys.milkd.main.ReportSystem;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class ReportManager {
@@ -87,7 +84,7 @@ public class ReportManager {
         return reporterName;
     }
 
-    public void updateReportsTimeStamp() {
+    /*public void updateReportsTimeStamp() {
         try (Connection connection = SQLDataSourceManager.getInstance().getFuckingConnection();
              PreparedStatement check = connection.prepareStatement("SELECT `ReportID`,`TimeStamp`,`ReportedName`,`ReportedUUID`,`ReporterName`,`ReporterUUID` FROM `ReportSystem` WHERE `State`=?");
              PreparedStatement update = connection.prepareStatement("UPDATE `ReportSystem` SET `State`=? WHERE `ReportID`=?")) {
@@ -113,7 +110,7 @@ public class ReportManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/ // it should be done by bungeecord
 
     public HashMap<Integer, ReportState> getAvaliableReports() throws NoAvailableReportException {
         HashMap<Integer, ReportState> reports = new HashMap<>();
@@ -185,7 +182,7 @@ public class ReportManager {
                 execute.setInt(2, id);
                 duplicateds.remove(target); //also remove cache
                 execute.execute();
-                PluginMessager.uploadHandle(reportedName, target, id, state, currentState, operator);
+                RedisChannel.uploadHandle(reportedName, target, id, state, currentState, operator);
                 return true;
             } else {
                 throw new ReportNotOpenException(ConfigManager.notOpen.replace("<id>", id + "").replace("<state>", currentState.getTitle()));
@@ -255,7 +252,7 @@ public class ReportManager {
             newreport.setString(8, server);
             newreport.setString(9, null);
             newreport.execute();
-            PluginMessager.broadcastReport(player.getName(), reportedTarget.getName(), reason, player);
+            RedisChannel.broadcastReport(player.getName(), reportedTarget.getName(), reason, player);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

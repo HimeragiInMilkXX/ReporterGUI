@@ -1,10 +1,10 @@
-package com.ericlam.manager;
+package com.reporter.sys.ericlam.manager;
 
-import com.ericlam.containers.HandleItem;
-import com.ericlam.containers.ReportItem;
-import com.ericlam.enums.ReasonType;
-import com.ericlam.enums.ReportState;
-import com.milkd.main.ReportSystem;
+import com.reporter.sys.ericlam.containers.HandleItem;
+import com.reporter.sys.ericlam.containers.ReportItem;
+import com.reporter.sys.ericlam.enums.ReasonType;
+import com.reporter.sys.ericlam.enums.ReportState;
+import com.reporter.sys.milkd.main.ReportSystem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;

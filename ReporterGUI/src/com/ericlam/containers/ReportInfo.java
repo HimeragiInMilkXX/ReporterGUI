@@ -2,32 +2,36 @@ package com.ericlam.containers;
 
 import com.ericlam.enums.ReasonType;
 import com.ericlam.enums.ReportState;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
 import java.util.UUID;
 
 public class ReportInfo {
     private int reportID;
     private UUID reporterUUID;
-    private OfflinePlayer reporter;
+    private String reporter;
     private UUID reportedUUID;
-    private OfflinePlayer reported;
+    private String reported;
     private ReasonType reason;
+    private String server;
     private long timestamp;
     private ReportState state;
     private String operator;
 
-    public ReportInfo(int reportID, UUID reporterUUID, UUID reportedUUID, ReasonType reason, long timestamp, ReportState state, String operator) {
+    public ReportInfo(int reportID, UUID reporterUUID, UUID reportedUUID, String reporter, String reported, ReasonType reason, long timestamp, ReportState state, String operator, String server) {
         this.reportID = reportID;
         this.reporterUUID = reporterUUID;
-        this.reporter = Bukkit.getOfflinePlayer(reporterUUID);
+        this.reporter = reporter;
         this.reportedUUID = reportedUUID;
-        this.reported = Bukkit.getOfflinePlayer(reportedUUID);
+        this.reported = reported;
         this.reason = reason;
         this.timestamp = timestamp;
         this.state = state;
         this.operator = operator;
+        this.server = server;
+    }
+
+    public String getServer() {
+        return server;
     }
 
     public int getReportID() {
@@ -38,7 +42,7 @@ public class ReportInfo {
         return reporterUUID;
     }
 
-    public OfflinePlayer getReporter() {
+    public String getReporter() {
         return reporter;
     }
 
@@ -46,7 +50,7 @@ public class ReportInfo {
         return reportedUUID;
     }
 
-    public OfflinePlayer getReported() {
+    public String getReported() {
         return reported;
     }
 

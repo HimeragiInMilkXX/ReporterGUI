@@ -1,11 +1,12 @@
 package com.milkd.main;
 
 import com.ericlam.manager.ConfigManager;
+import com.ericlam.manager.ReportManager;
 import com.hypernite.mysql.SQLDataSourceManager;
 import com.milkd.commands.AdminReportCommand;
 import com.milkd.commands.ReloadCommand;
 import com.milkd.commands.ReportCommand;
-import com.milkd.listener.onPlayerChat;
+import com.milkd.listener.ReportListeners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -44,16 +45,20 @@ public class ReportSystem extends JavaPlugin {
 
         ConfigManager.getInstance().loadConfig();
 
-        Bukkit.getPluginManager().registerEvents(new onPlayerChat(), this);
+        Bukkit.getPluginManager().registerEvents(new ReportListeners(), this);
 
         getCommand("reportadmin").setExecutor(new AdminReportCommand(this));
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("reportreload").setExecutor(new ReloadCommand());
 
-
-
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "ReportSystem enabled!");
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> ReportManager.getInstance().updateReportsTimeStamp(), 300 * 20L, 43200 * 20L);
 
     }
 
+    @Override
+    public void onDisable() {
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+    }
 }

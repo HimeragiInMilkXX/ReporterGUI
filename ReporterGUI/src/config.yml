@@ -1,4 +1,5 @@
 server: server
+expire-days: 7
 report-gui:
   size: 18
   title: "&4Report &b<player>"

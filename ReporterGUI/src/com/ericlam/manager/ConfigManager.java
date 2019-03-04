@@ -21,10 +21,11 @@ public class ConfigManager {
     public static int reportGuiSize, handleGuiSize;
     //for messages
     public static String prefix, reportHints, notValue, notOpen, handled, notPlayer, noPerm, requirePlayer,
-            noThisPlayer, noThisReport, handleFail, reported, noAvaReports;
+            noThisPlayer, noThisReport, handleFail, reported, noAvaReports, thankGive;
     public static String[] helps, details;
     private static ConfigManager configManager;
     public static List<String> chatContains;
+    public static int expireDays;
     //files
     private File configFile, reportFile, messageFile, handleFile;
     private FileConfiguration config, report, message, handle;
@@ -101,6 +102,7 @@ public class ConfigManager {
         handleGuiSize = config.getInt("handle-gui.size");
         handleGuiTitle = config.getString("handle-gui.title").replaceAll("&", "§");
         chatContains = config.getStringList("chat-filter");
+        expireDays = config.getInt("expire-days");
 
         //load messages
         prefix = ChatColor.translateAlternateColorCodes('&', message.getString("prefix"));
@@ -116,6 +118,7 @@ public class ConfigManager {
         noThisReport = translate("no-this-report");
         reported = translate("reported");
         noAvaReports = translate("no-available-reports");
+        thankGive = translate("thanks-giving");
 
 
         helps = translate(message.getStringList("help"));

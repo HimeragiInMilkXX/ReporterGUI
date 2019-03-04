@@ -48,16 +48,17 @@ public class AdminReportCommand implements CommandExecutor {
         if (args.length == 1) {
             switch (method) {
                 case "available":
-                    try {
-                        HashMap<Integer, ReportState> lists = manager.getAvaliableReports();
-                        for (Integer integer : lists.keySet()) {
-                            player.sendMessage(ConfigManager.prefix + "§f#" + integer + " §7- " + lists.get(integer).getTitle());
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        try {
+                            HashMap<Integer, ReportState> lists = manager.getAvaliableReports();
+                            for (Integer integer : lists.keySet()) {
+                                player.sendMessage(ConfigManager.prefix + "§f#" + integer + " §7- " + lists.get(integer).getTitle());
+                            }
+                            player.sendMessage(ConfigManager.prefix + "§7若舉報ID過多，請自行到舉報管理頁面查看。§c輸入/reportadmin info <id> 查看報告。");
+                        } catch (NoAvailableReportException e) {
+                            player.sendMessage(ConfigManager.noAvaReports);
                         }
-                        player.sendMessage(ConfigManager.prefix + "§7若舉報ID過多，請自行到舉報管理頁面查看。§c輸入/reportadmin info <id> 查看報告。");
-                    } catch (NoAvailableReportException e) {
-                        player.sendMessage(ConfigManager.noAvaReports);
-                        return false;
-                    }
+                    });
                     return true;
                 default:
                     player.sendMessage(ConfigManager.helps);
@@ -90,10 +91,11 @@ public class AdminReportCommand implements CommandExecutor {
 
                         player.sendMessage(Arrays.stream(ConfigManager.details).map(msg -> msg
                                 .replace("<report-id>", id + "")
-                                .replace("<main>", info.getReporter().getName())
-                                .replace("<reported>", info.getReported().getName())
+                                .replace("<main>", info.getReporter())
+                                .replace("<reported>", info.getReported())
                                 .replace("<reason>", info.getReason().getTitle())
-                                .replace("<state>", info.getState().getTitle())).toArray(String[]::new));
+                                .replace("<state>", info.getState().getTitle())
+                                .replace("<server>", info.getServer())).toArray(String[]::new));
                     } catch (ReportNonExistException e) {
                         player.sendMessage(e.getMessage()); //non exist
                     }

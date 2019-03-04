@@ -14,13 +14,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.UUID;
 
 public class ReportInventory {
     private Inventory inventory;
 
     public ReportInventory(OfflinePlayer reportedPlayer) {
-        UUID reportedUUID = reportedPlayer.getUniqueId();
         Inventory inventory = new InventoryBuilder(ConfigManager.reportGuiSize, ConfigManager.reportGuiTitle.replace("<player>", reportedPlayer.getName())).build();
         for (ReportItem item : ConfigManager.getInstance().getReportItems()) {
             ItemStack stack = new ItemStackBuilder(item.getMaterial()).displayName(item.getTitle()).lore(item.getLores()).onClick(e -> {
@@ -29,9 +27,10 @@ public class ReportInventory {
                 if (e.getSlotType() == InventoryType.SlotType.OUTSIDE) return;
                 e.setCancelled(true);
                 Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
-                    ReportManager.getInstance().addReport(player.getName(), reportedPlayer.getName(), player.getUniqueId(), reportedUUID, item.getReason(), time);
+                    ReportManager.getInstance().addReport(player, reportedPlayer, item.getReason(), time);
                     player.sendMessage(ConfigManager.reported.replace("<player>", reportedPlayer.getName()).replace("<reason>", item.getTitle().replace("&", "§")));
                 });
+                player.closeInventory();
             }).build();
             inventory.setItem(item.getSlot(), stack);
         }

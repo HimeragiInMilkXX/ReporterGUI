@@ -23,12 +23,13 @@ public class HandleInventory {
                 e.setCancelled(true);
                 Bukkit.getScheduler().runTaskAsynchronously(ReportSystem.plugin, () -> {
                     try {
-                        boolean success = ReportManager.getInstance().handleReport(id, item.getState());
+                        boolean success = ReportManager.getInstance().handleReport(id, item.getState(), player);
                         player.sendMessage(success ? ConfigManager.handled.replace("<id>", id + "").replace("<state>", item.getState().getTitle()) : ConfigManager.handleFail);
                     } catch (ReportNotOpenException | ReportNonExistException e1) {
                         player.sendMessage(e1.getMessage());
                     }
                 });
+                player.closeInventory();
             }).build();
             inventory.setItem(item.getSlot(), stack);
         }

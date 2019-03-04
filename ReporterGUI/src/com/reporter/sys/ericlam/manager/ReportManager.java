@@ -252,7 +252,7 @@ public class ReportManager {
             newreport.setString(8, server);
             newreport.setString(9, null);
             newreport.execute();
-            RedisChannel.broadcastReport(player.getName(), reportedTarget.getName(), reason, player);
+            RedisChannel.broadcastReport(player.getName(), reportedTarget.getName(), reason);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -14,20 +14,23 @@ public class RedisChannel {
     public static void broadcastReport(String reporter, String reported, ReasonType reason) {
         String server = ConfigManager.server;
         String msg = server + "_" + reporter + "_" + reported + "_" + reason.getTitle();
-        sendMessager(msg);
+        sendMessager(msg, false);
     }
 
     public static void uploadHandle(String reported, UUID reportedUUID, int reportID, ReportState afterState, ReportState beforeState, Player player) {
         String msg = reported + "_" + reportedUUID.toString() + "_" + reportID + "_" + beforeState.toString() + "_" + afterState.toString() + "_" + player.getName();
-        sendMessager(msg);
+        sendMessager(msg, false);
     }
 
-    private static void sendMessager(String msg) {
+    public static void clearCache(UUID uuid) {
+        sendMessager("del_" + uuid.toString(), true);
+    }
+
+    private static void sendMessager(String msg, boolean local) {
         try (Jedis redis = RedisManager.getInstance().getRedis()) {
-            redis.publish("Report-Bungee", msg);
+            redis.publish((local ? "Report-Spigot" : "Report-Bungee"), msg);
         } catch (JedisException e) {
             e.printStackTrace();
         }
-
     }
 }

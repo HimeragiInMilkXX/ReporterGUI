@@ -26,6 +26,11 @@ public class ReportManager {
 
     private HashMap<UUID, Set<ReasonType>> duplicateds = new HashMap<>();
 
+
+    public HashMap<UUID, Set<ReasonType>> getDuplicateds() {
+        return duplicateds;
+    }
+
     public static ReportManager getInstance() {
         if (manager == null) manager = new ReportManager();
         return manager;
@@ -37,10 +42,10 @@ public class ReportManager {
              PreparedStatement statement = connection.prepareStatement("SELECT `Reason`,`ReportedName` FROM `ReportSystem` WHERE `ReporterUUID`=? AND `State`=?");
              PreparedStatement update = connection.prepareStatement("UPDATE `ReportSystem` SET `State`=? WHERE `ReporterUUID`=? AND `State`=?")) {
             statement.setString(1, player.getUniqueId().toString());
-            statement.setString(2, ReportState.OPEN.toString());
+            statement.setString(2, ReportState.PROVED.toString());
             update.setString(1, ReportState.THANKED.toString());
             update.setString(2, player.getUniqueId().toString());
-            update.setString(3, ReportState.OPEN.toString());
+            update.setString(3, ReportState.PROVED.toString());
             ResultSet resultSet = statement.executeQuery();
             int i = 0;
             while (resultSet.next()) {
@@ -181,6 +186,7 @@ public class ReportManager {
                 execute.setString(1, state.toString());
                 execute.setInt(2, id);
                 duplicateds.remove(target); //also remove cache
+                RedisChannel.clearCache(target); // also call other server to remove cache
                 execute.execute();
                 RedisChannel.uploadHandle(reportedName, target, id, state, currentState, operator);
                 return true;

@@ -2,6 +2,7 @@ package com.reporter.sys.milkd.main;
 
 import com.hypernite.mysql.SQLDataSourceManager;
 import com.reporter.sys.ericlam.manager.ConfigManager;
+import com.reporter.sys.ericlam.manager.PlaceholderManager;
 import com.reporter.sys.ericlam.redis.RedisChannelListeners;
 import com.reporter.sys.ericlam.redis.RedisManager;
 import com.reporter.sys.ericlam.redis.Subscription;
@@ -58,6 +59,11 @@ public class ReportSystem extends JavaPlugin {
         getCommand("reportadmin").setExecutor(new AdminReportCommand(this));
         getCommand("report").setExecutor(new ReportCommand());
         getCommand("reportreload").setExecutor(new ReloadCommand());
+
+        if (getServer().getPluginManager().getPlugin("PlaceHolderAPI") != null) {
+            getLogger().info("Found PlaceHolderAPI ! Hooking into it ....");
+            new PlaceholderManager(this).register();
+        }
 
         getServer().getLogger().info("Connecting to redis server...");
         Bukkit.getScheduler().runTaskAsynchronously(this, () -> {

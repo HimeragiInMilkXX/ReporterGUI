@@ -7,6 +7,8 @@ depend:
 authors:
   - EricLam
   - HimeragiInMilkXX
+softdepend:
+  - PlaceHolderAPI
 commands:
   report:
     description: report command

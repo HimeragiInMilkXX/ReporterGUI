@@ -11,5 +11,6 @@
     <orderEntry type="library" name="Paper-master" level="project" />
     <orderEntry type="library" name="HyperNiteMC-Core" level="project" />
     <orderEntry type="library" name="jedis-2.9.0" level="project" />
+    <orderEntry type="library" name="PlaceholderAPI-2.9.2" level="project" />
   </component>
 </module>
